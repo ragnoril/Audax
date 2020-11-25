@@ -41,6 +41,7 @@ public class MusicEngine : MonoBehaviour
 
 	public AudioClip MusicFile;
 
+	private bool _isMusicEnabled = true;
 
 	AudioSource AudioPlayer;
 	// Use this for initialization
@@ -52,12 +53,26 @@ public class MusicEngine : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+		if (Input.GetKeyDown(KeyCode.M))
+        {
+			if (AudioPlayer.isPlaying)
+            {
+				_isMusicEnabled = false;
+				AudioPlayer.Stop();
+            }
+			else
+            {
+				_isMusicEnabled = true;
+				WaitTick = WaitTimer - 0.5f;
+            }
+        }
+
 		if (AudioPlayer.isPlaying)
 		{
 			WaitTick = 0f;
 			if (AudioPlayer.volume < 1f) AudioPlayer.volume += 0.01f;
 		}
-		else
+		else if (_isMusicEnabled)
 		{
 			WaitTick += Time.deltaTime;
 			AudioPlayer.volume = 0f;
